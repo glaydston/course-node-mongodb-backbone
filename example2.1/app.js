@@ -12,7 +12,7 @@ app.get('/stooges/:name', function(req, res){
       res.send(name + ' is my favorite stooge.')
       break
     default:
-      next()
+      next('/')
    }
 })
 

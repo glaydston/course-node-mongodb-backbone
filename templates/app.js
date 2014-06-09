@@ -19,7 +19,7 @@ app.get('/stooges/:name?', function(req, res){
       res.render('stooges', {stooge: name})
       break
     default:
-      //next()
+      next()
    }
 })
 
