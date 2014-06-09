@@ -1,6 +1,6 @@
 {
   "name": "Example 2.1",
-  "version': "0.0.1",
+  "version": "0.0.1",
   "description": "An example module to illustrate the usage of express",
   "author": "Glaydston Velos <glaydston.oliveira@gmail.com>",
   "script": {
