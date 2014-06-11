@@ -77,6 +77,16 @@ module.exports = function(config, mongoose, Status, nodemailer){
         })
     }
 
+    var findByString = function(searchStr, callback){
+        var searchRegex = new RegExp(searchStr, 'i')
+        Account.find({
+            $or: [
+                {'name.full': {$regex: searchRegex}},
+                { email: {$regex: searchRegex}}
+            ]
+        }, callback)
+    }
+
     var register = function(email, password, fisrName, lastName){
         var shaSum = crypto.createHash('sha256')
         shaSum.update(password)
@@ -94,8 +104,26 @@ module.exports = function(config, mongoose, Status, nodemailer){
         console.log('Save command was sent')
     }
 
+
+    var addContact = function(account, addContact){
+        contact = {
+            name: addContact.name,
+            accountId: addContact.accountId,
+            added: new Date(),
+            updated: new Date()
+        }
+
+        account.contacts.push(contact)
+        account.save(function(err){
+            err ? console.log('Error saving account: ' + err) : {}
+        })
+
+    }
+
     return {
         findById: findById,
+        findByString: findByString,
+        addContact: addContact,
         register: register,
         forgotPassword: forgotPassword,
         changePassword: changePassword,

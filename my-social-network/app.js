@@ -128,7 +128,7 @@ app.get('/accounts/:id', function(req, res){
     var accountId = req.param.id == 'me'
         ? req.session.accountId
         : req.param.id
-    models.Account.findOne({_id: accountId}, function(account) {
+    models.Account.findById(accountId, function(account) {
         res.send(account)
     })
 })
@@ -137,8 +137,54 @@ app.get('/accounts/:id/contacts', function(req, res){
     var accountId = req.param.id == 'me'
         ? req.session.accountId
         : req.param.id
-    models.Account.findOne({_id: accountId}, function(account) {
+    models.Account.findById(accountId, function(account) {
         res.send(account.contacts)
+    })
+
+})
+
+app.post('/accounts/:id/contact', function(req, res){
+    var accountId = req.param.id == 'me'
+        ? req.session.accountId
+        : req.param.id
+    var contactId = req.param('contactId', null)
+
+    // Missing contactId, don't bother going any further
+    if(null == contactId){
+        res.send(400)
+        return
+    }
+
+    models.Account.findById(accountId, function(account){
+        if(account){
+            models.Account.findById(contactId, function(contact){
+                models.Account.addContact(account, contact)
+
+                // Made the reverse link
+                models.Account.addContact(contact, account)
+                account.save()
+            })
+        }
+    })
+
+    // Note: Not in callback - this endpoint returns immediately and
+    // process in the background
+    res.send(200)
+})
+
+app.post('/contacts/find', function(req, res){
+    var searchStr = req.param('searchStr', null)
+    if(null == searchStr) {
+        res.send(400)
+        return
+    }
+
+    models.Account.findByString(searchStr, function onSearchDone(err, accounts){
+        if(err || accounts.length == 0){
+            res.send(400)
+        } else {
+            res.send(accounts)
+        }
     })
 
 })
