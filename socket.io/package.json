@@ -1,17 +1,14 @@
 {
-  "name": "Socket.io",
-  "version": "0.0.3",
-  "description": "An example module to illustrate the usage socket.io",
-  "author": "Glaydston Velos <glaydston.oliveira@gmail.com>",
-  "script": {
-    "start": "node app.js"
-  }, 
-  "dependencies": {
-    "express": "4.2.x",
-    "jade": "1.3.x",
-    "socket.io": "0.0.x"
-  }
-  
- 
-
+    "name": "Socket.io",
+    "version": "0.0.3",
+    "description": "An example module to illustrate the usage socket.io",
+    "author": "Glaydston Velos <glaydston.oliveira@gmail.com>",
+    "script": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "express": "4.2.x",
+        "jade": "1.3.x",
+        "socket.io": "0.0.x"
+    }
 }

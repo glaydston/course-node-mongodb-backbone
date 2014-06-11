@@ -10,28 +10,28 @@ app.set('views', express.static(__dirname + '/views'))
 
 // Expecting the name of one of the stooges as input
 app.get('/stooges/:name?', function(req, res){
-  var name = req.params.name
-  
-  switch( name ? name.toLowerCase() : ''){
-    case 'larry':
-    case 'curly':
-    case 'moe':
-      res.render('stooges', {stooge: name})
-      break
-    default:
-      next()
-   }
+    var name = req.params.name
+
+    switch( name ? name.toLowerCase() : ''){
+        case 'larry':
+        case 'curly':
+        case 'moe':
+            res.render('stooges', {stooge: name})
+            break
+        default:
+            next()
+    }
 })
 
 
 // A fallback from the previous route, in case the name provided was not found
 app.get('/stooges/*?', function(req, res){
-  res.render('stooges', {stooge: null})
+    res.render('stooges', {stooge: null})
 })
 
 // A default route used to access the application’s home page
 app.get('/?', function(req, res){
-  res.render('index')
+    res.render('index')
 })
 
 var port = 8080

@@ -1,16 +1,13 @@
 {
-  "name": "Templates",
-  "version": "0.0.2",
-  "description": "An example module to illustrate the usage of jade with express",
-  "author": "Glaydston Velos <glaydston.oliveira@gmail.com>",
-  "script": {
-    "start": "node app.js"
-  }, 
-  "dependencies": {
-    "express": "4.2.x",
-    "jade": "1.3.x"
-  }
-  
- 
-
+    "name": "Templates",
+    "version": "0.0.2",
+    "description": "An example module to illustrate the usage of jade with express",
+    "author": "Glaydston Veloso <glaydston.oliveira@gmail.com>",
+    "script": {
+        "start": "node app.js"
+    },
+    "dependencies": {
+        "express": "4.2.x",
+        "jade": "1.3.x"
+    }
 }
