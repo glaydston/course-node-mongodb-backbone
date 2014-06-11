@@ -133,6 +133,16 @@ app.get('/accounts/:id', function(req, res){
     })
 })
 
+app.get('/accounts/:id/contacts', function(req, res){
+    var accountId = req.param.id == 'me'
+        ? req.session.accountId
+        : req.param.id
+    models.Account.findOne({_id: accountId}, function(account) {
+        res.send(account.contacts)
+    })
+
+})
+
 app.post('/forgotpassword', function(req, res){
     var hostname = req.headers.host
     var resetPasswordUrl = 'http://' + hostname + 'resetPassword'
