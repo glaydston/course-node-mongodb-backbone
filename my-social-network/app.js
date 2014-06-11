@@ -70,4 +70,21 @@ app.post('/forgotpassword', function(req, res){
 	})
 })
 
+app.get('resetPassowrd', function(req, res){
+	var accountId = req.param('account', null)
+	res.sender('resetPassword.jade', {locals: {accountId:accountId}})
+})
+
+app.post('resetPassword', function(req, res){
+	var accountId = req.param('accountId', null)
+	var password = req.param('password', null)
+	
+	if(null != accountId && null != password){
+		Account.changePassword(accountId, password)		
+	}
+
+	res.sender('resetPasswordSuccess.jade')
+})
+
+
 app.listen(8080)
