@@ -10,4 +10,9 @@ app.get('/', function(req, res){
   res.render("index.jade", {layout:false})
 })
 
+app.get('account/authenticated', function(req, res){
+  req.session.loggedIn ? res.send(200)
+		:	res.send(401)
+})
+
 app.listen(8080)
