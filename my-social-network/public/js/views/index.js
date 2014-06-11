@@ -1,5 +1,5 @@
 define(['SocialNetView', 'text!templates/index.html',
-        'views/status', 'models/Status'],
+        'views/status', '/models/Status'],
     function(SocialNetView, indexTemplate, StatusView, Status){
         var indexView = SocialNetView.extend({
             el: $('#content'),

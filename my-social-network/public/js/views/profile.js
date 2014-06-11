@@ -1,8 +1,8 @@
 define(['SocialNetView', 'text!templates/profile.html'],
-    ['text!templates/status.html', 'models/Status',
+        ['text!templates/status.html', '/models/Status',
         'views/Status'],
     function(SocialNetView, profileTemplate, statusTemplate, Status, StatusView){
-        var profileView = SocialNetViev.extend({
+        var profileView = SocialNetView.extend({
             el: $('#content'),
 
             initialize: function(){
