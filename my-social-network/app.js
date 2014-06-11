@@ -1,18 +1,39 @@
 var express = require('express')
 var app = express()
+var nodemailer = require('nodemailer')
+var MemoryStore = require('connect').session.MemoryStore
+
+// Import the data layer
+var mongoose = require('mongoose')
+var config = {
+  mail: require('./config/mail')
+}
+
+// Import the accounts
+var Account = require('./models/Account')(config, mongoose, nodemailer)
+
+
 
 app.configure(function(){
   app.set('view engine', 'jade')
   app.use(express.static(__dirname + 'public'))
+  app.use(express.limit('1mb'))
+  app.use(express.bodyParser())
+  app.use(express.cookieParser())
+  app.use(express.session(
+    { secret: "SocialNet secret key", store : new MemoryStore() })
+  )
+  mongoose.connect('mongodb://localhost/nodebackbone')
+  
 })
 
 app.get('/', function(req, res){
-  res.render("index.jade", {layout:false})
+  res.render("index.jade")
 })
 
 app.get('account/authenticated', function(req, res){
   req.session.loggedIn ? res.send(200)
-		:	res.send(401)
+		:	/* otherwise */  res.send(401)
 })
 
 app.post('/register', function(req, res){
