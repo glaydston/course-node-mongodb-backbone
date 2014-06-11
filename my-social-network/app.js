@@ -30,4 +30,28 @@ app.post('/register', function(req, res){
 	res.send(200)
 })
 
+app.post('/login', function(req, res){
+  console.log('login request')
+  
+  var email = req.param('email', '')
+  var password = req.param('password', '')
+
+  if(null == email || email.length < 1 
+      || null == password || password.length < 1){
+    res.send(400)
+    return
+  }
+
+  Account.login(email, password, function(success){
+    if(!success){ 
+      res.send(401)
+      return    
+    }
+
+    console.log('login was successful')
+    res.send(200)
+  })
+  
+})
+
 app.listen(8080)
