@@ -1,38 +1,55 @@
-define(['views/index', 'views/register', 'views/login', 'views/forgotpassword'], function(IndexView, RegisterView, LoginView, ForgotPasswordView){
-  var SocialRouter = Backbonde.Router.extend({
-    currentView: null,
-    
-    routes: {
-      "index": "index",
-      "login": "login",
-      "register": "register",
-      "forgotpassword": "forgotpassword"    
-    },
-    
-    changeView: function(view){
-      if(null != this.currentView){
-        this.currentView.undelegateEvents()      
-      }     
-      this.currentView = view
-      this.currentView.render()
-    },
+define(['views/index', 'views/register', 'views/login',
+        'views/forgotPassword', 'views/profile', 'models/Account',
+        'models/StatusCollection'],
+    function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
+            Account, StatusCollection){
+        var SocialRouter = Backbone.Router.extend({
+            currentView: null,
 
-    index: function(){
-      this.changeView(new IndexView())    
-    },
+            routes: {
+                "index": "index",
+                "login": "login",
+                "register": "register",
+                "forgotPassword": "forgotPassword",
+                "profile/:id": "profile"
+            },
 
-    login: function(){
-      this.changeView(new LoginView())    
-    }, 
+            changeView: function(view){
+                if(null != this.currentView){
+                    this.currentView.undelegateEvents()
+                }
+                this.currentView = view
+                this.currentView.render()
+            },
 
-    forgotpassword: function(){
-      this.changeView(new ForgotPasswordView())    
-    },
+            index: function(){
+                var statusCollection = new StatusCollection()
+                statusCollection.url = 'account/me/activity'
+                this.changeView(new IndexView({
+                    collection: statusCollection
+                }))
+                statusCollection.fetch()
 
-    register: function(){
-      this.changeView(new RegisterView())    
-    }
-  })
+            },
 
-  return new SocialRouter()
-})
+            login: function(){
+                this.changeView(new LoginView())
+            },
+
+            forgotPassword: function(){
+                this.changeView(new ForgotPasswordView())
+            },
+
+            register: function(){
+                this.changeView(new RegisterView())
+            },
+
+            profile: function(id){
+                var model = new Account({id: id})
+                this.changeView(new ProfileView({model: view}))
+                model.fetch()
+            }
+        })
+
+        return new SocialRouter()
+    })
