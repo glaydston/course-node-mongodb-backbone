@@ -54,4 +54,20 @@ app.post('/login', function(req, res){
   
 })
 
+app.post('/forgotpassword', function(req, res){
+	var hostname = req.headers.host
+	var resetPasswordUrl = 'http://' + hostname + 'resetPassword'
+	var email = req.param('email', null)
+
+	if( null == email, || email.length < 1){
+		res.send(400)
+		return			
+	}
+
+	Account.forgotPassword(email, resetPasswordUrl, function(success){
+		success ? res.send(200) 
+		:	/* otherwise */	res.send(400) 
+	})
+})
+
 app.listen(8080)
