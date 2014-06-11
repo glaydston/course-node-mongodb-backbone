@@ -13,6 +13,6 @@ require.config({
   }
 })
 
-require(['SocialNet'], function(SociaNet){
+require(['SocialNet'], function(SocialNet){
   SocialNet.initialize() 
 })

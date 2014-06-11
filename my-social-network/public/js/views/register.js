@@ -1,28 +1,28 @@
-define(['text!templates/register.html'], function(){
-  var registerView = Backbone.View.extend({
-    el: $('#content'),
-    
-    events: {
-      "submit form": "register"    
-    },
+define(['text!templates/register.html'], function(registerTemplate){
+    var registerView = Backbone.View.extend({
+        el: $('#content'),
 
-    register: function(){
-      $.post('/register', {
-        firstName: $('input[name=firstName]').val(),    
-        lastName: $('input[name=lastName]').val(),  
-        email: $('input[name=email]').val(),
-        password: $('input[name=password]').val(),
-      }, function(data){
-        console.log(data)      
-      })    
-      
-      return false
-    },
+        events: {
+            "submit form": "register"
+        },
 
-    render: function(){
-      this.$el.html(registerTemplate)        
-    }  
-  })
+        register: function(){
+            $.post('/register', {
+                firstName: $('input[name=firstName]').val(),
+                lastName: $('input[name=lastName]').val(),
+                email: $('input[name=email]').val(),
+                password: $('input[name=password]').val(),
+            }, function(data){
+                console.log(data)
+            })
 
-  return registerView
+            return false
+        },
+
+        render: function(){
+            this.$el.html(registerTemplate)
+        }
+    })
+
+    return registerView
 })

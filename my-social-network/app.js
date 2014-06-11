@@ -37,18 +37,18 @@ app.get('account/authenticated', function(req, res){
 })
 
 app.post('/register', function(req, res){
-	var firstName = req.param('firstName', '')
-	var lastName = req.param('lastName','')
-	var email = req.param('email', '')
-	var password = req.param('password', '')
+    var firstName = req.param('firstName', '')
+    var lastName = req.param('lastName','')
+    var email = req.param('email', '')
+    var password = req.param('password', '')
 
-	if(null == email || null == password){
-		res.send(400)
-		return
-	}
+    if(null == email || null == password){
+        res.send(400)
+        return
+    }
 
-	Account.register(email, password, firstName, lastName)
-	res.send(200)
+    Account.register(email, password, firstName, lastName)
+    res.send(200)
 })
 
 app.post('/login', function(req, res){
@@ -80,7 +80,7 @@ app.post('/forgotpassword', function(req, res){
 	var resetPasswordUrl = 'http://' + hostname + 'resetPassword'
 	var email = req.param('email', null)
 
-	if( null == email, || email.length < 1){
+	if( null == email || email.length < 1){
 		res.send(400)
 		return			
 	}

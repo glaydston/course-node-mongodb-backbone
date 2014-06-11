@@ -2,26 +2,26 @@ var events = require('events')
 var eventEmitter = new events.EventEmitter()
 
 function mainLoop(){
-  console.log('Starting application')
-  eventEmitter.emit('ApplicationStart')
- 
-  console.log('Running application')
-  eventEmitter.emit('ApplicationRun')
+    console.log('Starting application')
+    eventEmitter.emit('ApplicationStart')
 
-  console.log('Stopping application')
-  eventEmitter.emit('ApplicationStop')
+    console.log('Running application')
+    eventEmitter.emit('ApplicationRun')
+
+    console.log('Stopping application')
+    eventEmitter.emit('ApplicationStop')
 }
 
 function onApplicationStart(){
-  console.log('Handling Application Start Event')
+    console.log('Handling Application Start Event')
 }
 
 function onApplicationRun(){
-  console.log('Handling Application Run Event')
+    console.log('Handling Application Run Event')
 }
 
 function onApplicationStop(){
-  console.log('Handling Application Stop Event')
+    console.log('Handling Application Stop Event')
 }
 
 eventEmitter.on('ApplicationStart', onApplicationStart)

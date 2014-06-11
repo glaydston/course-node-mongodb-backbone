@@ -9,7 +9,7 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword'],
       "forgotpassword": "forgotpassword"    
     },
     
-    chandeView: function(view){ 
+    changeView: function(view){
       if(null != this.currentView){
         this.currentView.undelegateEvents()      
       }     
@@ -31,7 +31,7 @@ define(['views/index', 'views/register', 'views/login', 'views/forgotpassword'],
 
     register: function(){
       this.changeView(new RegisterView())    
-    },
+    }
   })
 
   return new SocialRouter()
