@@ -1,5 +1,15 @@
-module.exports = function(config, mongoose, nodemailer){
+module.exports = function(config, mongoose, Status,  nodemailer){
     var crypto = require('crypto')
+
+    var Status = new mongoose.Schema({
+        name: {
+            firstName: { type: String},
+            lastName : { type: String}
+        },
+
+        status: { type: String}
+
+    })
 
     var AccountSchema = new mongoose.Schema({
         email:    { type: String, unique: true},
@@ -14,7 +24,9 @@ module.exports = function(config, mongoose, nodemailer){
             year:   { type: Number }
         },
         photoUrl:   { type: String },
-        biography:  { type: String }
+        biography:  { type: String },
+        status: [Status],
+        activity: [Status]
     })
 
     var Account = mongoose.model('Account', AccountSchema)
@@ -59,6 +71,12 @@ module.exports = function(config, mongoose, nodemailer){
         Account.findOne({email: email, password: shaSum.digest('hex')}, function(err, doc){callback(null!=doc)})
     }
 
+    var findById = function(accountId, callback){
+        Account.findOne({_id: accountId}, function(err, doc){
+            callback(doc)
+        })
+    }
+
     var register = function(email, password, fisrName, lastName){
         var shaSum = crypto.createHash('sha256')
         shaSum.update(password)
@@ -74,6 +92,15 @@ module.exports = function(config, mongoose, nodemailer){
         })
         user.save(registerCallback)
         console.log('Save command was sent')
+    }
+
+    return {
+        findById: findById,
+        register: register,
+        forgotPassword: forgotPassword,
+        changePassword: changePassword,
+        login: login,
+        Account: Account
     }
 
 }
