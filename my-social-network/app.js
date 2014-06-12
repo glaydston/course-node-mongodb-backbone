@@ -33,11 +33,6 @@ app.get('/', function(req, res){
     res.render("index.jade")
 })
 
-app.get('account/authenticated', function(req, res){
-    req.session.loggedIn ? res.send(200)
-        :	/* otherwise */  res.send(401)
-})
-
 app.post('/login', function(req, res){
     console.log('login request')
 
@@ -129,6 +124,10 @@ app.get('/accounts/:id', function(req, res){
         ? req.session.accountId
         : req.param.id
     models.Account.findById(accountId, function(account) {
+        if ( accountId == 'me'
+            || models.Account.hasContact(account, req.session.accountId) ) {
+            account.isFriend = true
+        }
         res.send(account)
     })
 })

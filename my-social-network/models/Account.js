@@ -11,6 +11,16 @@ module.exports = function(config, mongoose, Status, nodemailer){
 
     })
 
+    var Contact = new mongoose.Schema({
+        name: {
+            first: { type: String },
+            last: { type: String }
+        },
+        accountId: { type: mongoose.Schema.ObjectId },
+        added: { type: Date },      // When the contact was added
+        updated: { type: Date }     // When the contact last updated
+    });
+
     var AccountSchema = new mongoose.Schema({
         email:    { type: String, unique: true},
         password: { type: String},
@@ -25,6 +35,7 @@ module.exports = function(config, mongoose, Status, nodemailer){
         },
         photoUrl:   { type: String },
         biography:  { type: String },
+        contacts: [Contact],
         status: [Status],
         activity: [Status]
     })
@@ -130,11 +141,22 @@ module.exports = function(config, mongoose, Status, nodemailer){
         account.save()
      }
 
+    var hasContact = function(account, contactId) {
+        if ( null == account.contacts ) return false
+        account.contacts.forEach(function(contact) {
+            if ( contact.accountId == contactId ) {
+                return true
+            }
+        })
+        return false
+    }
+
     return {
         findById: findById,
         findByString: findByString,
         addContact: addContact,
         removeContact: removeContact,
+        hasContact: hasContact,
         register: register,
         forgotPassword: forgotPassword,
         changePassword: changePassword,

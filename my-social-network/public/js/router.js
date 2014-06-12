@@ -1,17 +1,21 @@
 define(['views/index', 'views/register', 'views/login',
-        'views/forgotPassword', 'views/profile', 'models/Account',
-        'models/StatusCollection'],
+        'views/forgotPassword', 'views/profile', 'views/contacts',
+        'views/addContact', 'models/Account', 'models/StatusCollection'],
+        'models/ContactCollection',
     function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
-            Account, StatusCollection){
+             ContactsView, AddContactView, Account, StatusCollection,
+             ContactCollection){
         var SocialRouter = Backbone.Router.extend({
             currentView: null,
 
             routes: {
+                "addContact": "addContact",
                 "index": "index",
                 "login": "login",
                 "register": "register",
                 "forgotPassword": "forgotPassword",
-                "profile/:id": "profile"
+                "profile/:id": "profile",
+                "contacts/:id": "contacts"
             },
 
             changeView: function(view){
@@ -32,6 +36,10 @@ define(['views/index', 'views/register', 'views/login',
 
             },
 
+            addContact: function() {
+                this.changeView(new AddContactView());
+            },
+
             login: function(){
                 this.changeView(new LoginView())
             },
@@ -48,6 +56,16 @@ define(['views/index', 'views/register', 'views/login',
                 var model = new Account({id: id})
                 this.changeView(new ProfileView({model: view}))
                 model.fetch()
+            },
+
+            contacts: function(id) {
+                var contactId = id ? id : 'me';
+                var contactsCollection = new ContactCollection();
+                contactsCollection.url = '/accounts/' + contactId + '/contacts';
+                this.changeView(new ContactsView({
+                    collection: contactsCollection
+                }));
+                contactsCollection.fetch();
             }
         })
 
