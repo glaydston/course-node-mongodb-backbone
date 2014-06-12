@@ -1,5 +1,14 @@
-module.exports = function(config, mongoose, Status, nodemailer){
+module.exports = function(app, config, mongoose, Status, nodemailer){
     var crypto = require('crypto')
+
+    var schemaOptions = {
+        toJSON: {
+            virtuals: true
+        },
+        toObject: {
+            virtuals: true
+        }
+    }
 
     var Status = new mongoose.Schema({
         name: {
@@ -19,7 +28,11 @@ module.exports = function(config, mongoose, Status, nodemailer){
         accountId: { type: mongoose.Schema.ObjectId },
         added: { type: Date },      // When the contact was added
         updated: { type: Date }     // When the contact last updated
-    });
+    }, schemaOptions)
+
+    Contact.virtual('online').get(function(){
+        return app.isAccountOnline(this.get('accountId'))
+    })
 
     var AccountSchema = new mongoose.Schema({
         email:    { type: String, unique: true},
