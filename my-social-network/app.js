@@ -172,6 +172,37 @@ app.post('/accounts/:id/contact', function(req, res){
     res.send(200)
 })
 
+app.delete('/accounts/:id/contact', function(req, res){
+    var accountId = req.param.id == 'me'
+        ? req.session.accountId
+        : req.param.id
+    var contactId = req.param('contactId', null)
+
+    // Missing contactId, don't bother going any further
+    if(null == contactId){
+        res.send(400)
+        return
+    }
+
+    models.Account.findById(accountId, function(account){
+        if(account){
+            models.Account.findById(contactId, function(contact){
+                models.Account.removeContact(account, contact)
+
+                // Kill the reverse link
+                models.Account.removeContact(contact, account)
+                account.save()
+            })
+        }
+    })
+
+    // Note: Not in callback - this endpoint returns immediately and
+    // process in the background
+    res.send(200)
+
+
+})
+
 app.post('/contacts/find', function(req, res){
     var searchStr = req.param('searchStr', null)
     if(null == searchStr) {
@@ -188,6 +219,7 @@ app.post('/contacts/find', function(req, res){
     })
 
 })
+
 
 app.post('/forgotpassword', function(req, res){
     var hostname = req.headers.host
