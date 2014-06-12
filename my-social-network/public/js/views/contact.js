@@ -45,4 +45,6 @@ define(['SocialNetView', 'text!templates/contact.html'],
             }
 
         })
+
+        return contactView
     })

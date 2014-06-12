@@ -4,7 +4,8 @@ require.config({
         Underscore: '/underscore/underscore',
         Backbone: '/backbone/backbone',
         text: '/js/libs/text',
-        templates: '../templates'
+        templates: '../templates',
+        Sockets: '/socket.io/socket.io'
     },
 
     shim: {

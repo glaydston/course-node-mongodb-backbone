@@ -1,12 +1,14 @@
 define(['views/index', 'views/register', 'views/login',
         'views/forgotPassword', 'views/profile', 'views/contacts',
-        'views/addContact', 'models/Account', 'models/StatusCollection'],
-        'models/ContactCollection',
+        'views/addContact', 'models/Account', 'models/StatusCollection',
+        'models/ContactCollection'],
     function(IndexView, RegisterView, LoginView, ForgotPasswordView, ProfileView,
              ContactsView, AddContactView, Account, StatusCollection,
              ContactCollection){
         var SocialRouter = Backbone.Router.extend({
             currentView: null,
+
+            socketEvents: _.extend({}, Backbone.Events),
 
             routes: {
                 "addContact": "addContact",
@@ -30,7 +32,8 @@ define(['views/index', 'views/register', 'views/login',
                 var statusCollection = new StatusCollection()
                 statusCollection.url = 'account/me/activity'
                 this.changeView(new IndexView({
-                    collection: statusCollection
+                    collection: statusCollection,
+                    socketEvents: this.socketEvents
                 }))
                 statusCollection.fetch()
 
@@ -41,7 +44,7 @@ define(['views/index', 'views/register', 'views/login',
             },
 
             login: function(){
-                this.changeView(new LoginView())
+                this.changeView(new LoginView({socketEvents: this.socketEvents}))
             },
 
             forgotPassword: function(){
@@ -54,7 +57,10 @@ define(['views/index', 'views/register', 'views/login',
 
             profile: function(id){
                 var model = new Account({id: id})
-                this.changeView(new ProfileView({model: view}))
+                this.changeView(new ProfileView({
+                    model: model,
+                    socketEvents: this.socketEvents
+                }))
                 model.fetch()
             },
 
